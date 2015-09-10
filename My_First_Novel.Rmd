@@ -1,0 +1,8 @@
+---
+title: "My First Novel"
+author: "Chris Lynum"
+date: "September 10, 2015"
+output: html_document
+---
+
+There once was a boy named Clarence. 
