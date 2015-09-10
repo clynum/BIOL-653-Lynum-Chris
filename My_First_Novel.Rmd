@@ -6,3 +6,5 @@ output: html_document
 ---
 
 There once was a boy named Clarence. 
+
+Editor note: Don't forget to kill off Clarence at the end.
