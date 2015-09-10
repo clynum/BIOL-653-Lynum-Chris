@@ -1,0 +1,11 @@
+---
+title: "Novel 2"
+author: "Chris Lynum"
+date: "September 10, 2015"
+output: html_document
+---
+
+Not really sure what happened to the beaver kits. 
+
+
+Now what happens if I add some blue jays?
