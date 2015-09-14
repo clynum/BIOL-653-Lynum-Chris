@@ -3,6 +3,8 @@
 
 So I pulled the READM.md file from my git repository via the terminal.
 
+> git pull origin master
+
 Then I opened the file via the terminal ("open README.md")
 
 Now I'm making changes in this TeXShop application that the .md file was opened in.
@@ -18,3 +20,7 @@ slide break
 > plus a block quote 
 
 What kind of file is an .md? I just realized that I could make changes within RStudio so I'm doing that now.
+
+Adding some changes.
+
+Hey Jillian!
