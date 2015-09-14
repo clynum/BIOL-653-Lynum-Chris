@@ -1,0 +1,11 @@
+---
+title: "Homework One"
+author: "Chris Lynum"
+date: "September 13, 2015"
+output: pdf_document
+---
+
+## I created a new markdown file in RStudio
+
+I saved the file as *Homework1_Lynum*
+
