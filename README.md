@@ -16,3 +16,5 @@ I know this *italicizes*
 slide break
 
 > plus a block quote 
+
+What kind of file is an .md? I just realized that I could make changes within RStudio so I'm doing that now.
