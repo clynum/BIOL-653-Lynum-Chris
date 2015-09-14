@@ -1,7 +1,7 @@
 # BIOL-653-Lynum-Chris
 
 
-So I pulled the READM.md file from my git repository via the terminal.
+So I pulled the README.md file from my git repository via the terminal.
 
 > git pull origin master
 
