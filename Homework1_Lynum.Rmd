@@ -9,3 +9,4 @@ output: pdf_document
 
 I saved the file as *Homework1_Lynum*
 
+Then I made these changed to the file after adding and committing the original file. 
