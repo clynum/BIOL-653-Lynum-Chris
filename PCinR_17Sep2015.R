@@ -1,5 +1,6 @@
 #View(gapminder) ####
 library(gapminder)
+library(ggplot2)
 str(gapminder)
 #1704 observations (rows) with 6 variables (columns)
 
@@ -44,7 +45,7 @@ life[c(1, 2, 3, 1700:1704)]
 
 plot(gapminder$pop ~ gapminder$year)
 
-library(ggplot2)
+
 #data: as data.frame ####
 
 #aesthetic(aes): mapping variables to visual properties -
@@ -71,10 +72,21 @@ ggplot(data = gapminder, aes(x = year, y = lifeExp,
   geom_point()
 
 # Layering ####
-
+dev.new()
 linedYL <- ggplot(data = gapminder, aes(x = year, y = lifeExp)) + 
   geom_point()
 linedYL + geom_line(aes(by = country, color = continent))
+
+
+pr <- ggplot(data = gapminder, aes(x = year, y = lifeExp))
+pr + geom_point()
+pr + geom_point(aes(color = continent)) + geom_line(aes(by = country))
+pr + geom_line(aes(by = country, color = continent)) + geom_point() 
+# panel = background
+# data point = layer
+# lines = layer
+# axes = layers
+# etc. 
 
 
 
