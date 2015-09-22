@@ -107,6 +107,11 @@ prac2 + geom_point() + scale_color_gradientn(colours = topo.colors(10))
 #dev.set
 
 
+
+fac <- ggplot(data = gapminder, aes(x = year, y = lifeExp))
+fac + geom_point() + facet_wrap(~ continent)
+# alpha within geom_point will allow for transparency
+
 g <- ggplot(data = mpg, aes(x = class, y = hwy))
 g + geom_point()
 g + geom_bar(stat = 'identity')
