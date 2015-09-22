@@ -77,11 +77,14 @@ linedYL <- ggplot(data = gapminder, aes(x = year, y = lifeExp)) +
   geom_point()
 linedYL + geom_line(aes(by = country, color = continent))
 
-
+dev.new()
 pr <- ggplot(data = gapminder, aes(x = year, y = lifeExp))
+pr + geom_point(aes(color = continent))
 pr + geom_point()
 pr + geom_point(aes(color = continent)) + geom_line(aes(by = country))
-pr + geom_line(aes(by = country, color = continent)) + geom_point() 
+pr <- pr + geom_line(aes(by = country, color = continent))
+  + geom_point() 
+
 # panel = background
 # data point = layer
 # lines = layer
@@ -89,6 +92,19 @@ pr + geom_line(aes(by = country, color = continent)) + geom_point()
 # etc. 
 
 
+pr + xlab('Year') + ylab('Life Expactancy')
+
+dev.new()
+prac2 <- ggplot(data = gapminder, aes(x = year, y = lifeExp,
+                                      by = country,
+                                      color = log(gdpPercap)))
+prac2 + geom_point()
+prac2 + geom_point() + scale_color_gradientn(colours = topo.colors(10))
+# color HAS to be spelled colour for scale_color_gradientn
+
+#??dev.new()
+#dev.list()
+#dev.set
 
 
 g <- ggplot(data = mpg, aes(x = class, y = hwy))
