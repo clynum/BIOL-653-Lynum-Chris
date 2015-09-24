@@ -1,0 +1,26 @@
+---
+title: "24Sep2015"
+author: "Chris Lynum"
+date: "September 24, 2015"
+output: html_document
+---
+
+Split, apply, combine
+
+```{r}
+library(gapminder)
+library(dplyr)
+library(ggplot2)
+# Clear your workspace
+# rm(list= ls())
+```
+
+
+
+```{r}
+str(gapminder)
+filter(gapminder, country == 'Canada')
+
+
+```
+
