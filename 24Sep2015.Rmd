@@ -81,13 +81,14 @@ filter(gapminder, year == c(1952, 1972, 2002)) %>%
   group_by(country) %>% arrange(desc(pop))
 
 
-filter(gapminder2, year = 1952 | year == 1972 | year == 2002)
+filter(gapminder2, year == 1952 | year == 1972 | year == 2002)
   
 #filter(gapminder2, year == c(1952, 1972, 2002)) %>%
 # arrange(desc(year))
 
-filter(gapminder2, year %in% c(1952, 1972, 2002))
-
+minpop <- filter(gapminder2, year %in% c(1952, 1972, 2002)) %>%
+  group_by(continent, year) %>% select(min(pop)) 
+View(minpop)
 ```
 
 ### 2) Create a graph of the total population of each continent over time
