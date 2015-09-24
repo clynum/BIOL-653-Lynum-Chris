@@ -1,0 +1,36 @@
+---
+title: "Homework 2"
+author: "Chris Lynum"
+date: "September 23, 2015"
+output: html_document
+---
+
+## Part 1 - Make these plots!
+
+Making plots using the gampinder dataset.
+Plot are made up of layers, just like ogres.
+
+### Plot 1
+
+```{r}
+library(gapminder)
+library(ggplot2)
+```
+
+
+```{r}
+plot1 <- ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
+                                      color = continent))
+# Jillian, I made the backbone of the plot and wanted to color
+## by continent
+plot1 + geom_point()
+# here I added a layer of the points
+```
+
+### Plot 2
+
+```{r}
+
+```
+
+
