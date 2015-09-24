@@ -19,8 +19,96 @@ library(ggplot2)
 
 ```{r}
 str(gapminder)
+# selecting the rows
 filter(gapminder, country == 'Canada')
 
+# selecting columns
+# gapminder[, 'country'] <- old way
+select(gapminder, country)
 
+# only finds columns that start with whatever you put
+select(gapminder, starts_with('C'))
+
+head(select(gapminder, country))
+```
+
+
+```{r}
+group_by(gapminder, continent)
+# puts all continents together (Asias together, Europes together, etc.)
+
+# if you want to collapse a ton of data
+group_by(gapminder, continent) %>%
+  summarize(mean_life = mean(lifeExp))
+
+
+# if you want something to happen to every row of the data
+# adds a column to data set
+head(mutate(gapminder, gdp = gdpPercap * pop)) 
+
+
+# don't want all informoation, just wont the new column
+head(transmute(gapminder, gdp = gdpPercap * pop))
+```
+
+
+```{r}
+head(arrange(gapminder, desc(lifeExp)))
+# ascending is default
+```
+
+```{r}
+gapminder2 <- tbl_df(gapminder)
+str(gapminder2)
+# has multiple classes instead of just data frame
+# allows us to use a few different packages more easily
+gapminder2
+# now only shows the first 10 rows intead of listing everything
+```
+
+
+## Practice
+
+### 1) For each continent, what country had the smallest population in 1952, 1972, and 2002?
+
+So I want to separate for each continent
+Need to know the smallest population in each country
+for three different years
+```{r}
+group_by(gapminder, continent)
+filter(gapminder, year == c(1952, 1972, 2002)) %>% 
+  group_by(continent) %>%
+  group_by(country) %>% arrange(desc(pop))
+
+
+filter(gapminder2, year = 1952 | year == 1972 | year == 2002)
+  
+#filter(gapminder2, year == c(1952, 1972, 2002)) %>%
+# arrange(desc(year))
+
+filter(gapminder2, year %in% c(1952, 1972, 2002))
+
+```
+
+### 2) Create a graph of the total population of each continent over time
+```{r}
+prob2 <- ggplot(data = gapminder2, aes(x = continent, y = pop))
+prob2 + geom_bar(stat = 'identity')
+```
+
+
+### 3) Calculate the mean gdpPercap for each country
+
+```{r}
+
+```
+
+### 4) Calculate the mean gdp for each country
+
+```{r}
+group_by(gapminder, country) %>% 
+  mutate(data = gapminder, gdp = gdpPercap * pop)) %>%
+  summarize(mean_gdpP = mean(gdpPercap)) %>%
+  summarize(mean_gdp = mean(gdp))
 ```
 
