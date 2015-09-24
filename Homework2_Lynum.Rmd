@@ -30,7 +30,47 @@ plot1 + geom_point()
 ### Plot 2
 
 ```{r}
-
+# log the shit out of the data
+plot2 <- ggplot(data = gapminder, aes(x = log(gdpPercap), y = lifeExp,
+                                      color = continent))
+plot2 + geom_point()
+# fuck yeah
 ```
 
+### Plot 3
+
+```{r}
+plot3 <- ggplot(data = gapminder, aes(x = log(gdpPercap), y = lifeExp))
+plot3 + geom_point(aes(color = continent)) + stat_smooth(method = 'lm')
+# had to specify to do coloring by continent in geom_point
+# if I kept it within the original ggplot() there would be a stat_smooth
+## line for every continent individiually
+```
+
+### Plot 4
+
+```{r}
+plot4 <- ggplot(data = gapminder, aes(x = lifeExp, fill = continent ))
+plot4 + geom_density(aes(alpha = .3)) + facet_wrap(~ year)
+# fill = continent in the ggplot() otherwise can't get black outline
+## from geom_density
+```
+
+
+### Plot 5
+
+```{r}
+plot5 <- ggplot(data = gapminder, aes(x = continent, y = lifeExp,
+                                      color = continent))
+plot5 + geom_boxplot() + facet_wrap(~ year)
+```
+
+
+
+
+### Plot 6 - ish
+```{r}
+plot6 <- ggplot(data = gapminder, aes(x = lifeExp, fill = continent ))
+plot6 + geom_density(aes(alpha = .3))
+```
 
