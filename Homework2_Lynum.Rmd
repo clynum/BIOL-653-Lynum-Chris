@@ -13,6 +13,7 @@ Plot are made up of layers, just like ogres.
 ### Plot 1
 
 ```{r}
+# load the libraries that I will be using
 library(gapminder)
 library(ggplot2)
 ```
@@ -73,4 +74,56 @@ plot5 + geom_boxplot() + facet_wrap(~ year)
 plot6 <- ggplot(data = gapminder, aes(x = lifeExp, fill = continent ))
 plot6 + geom_density(aes(alpha = .3))
 ```
+
+### Plot 7
+
+```{r}
+
+```
+
+
+### Plot 8
+
+```{r}
+
+```
+
+
+## Part 3 - Find the mistakes
+
+```{r}
+setwd('~/R_Projects/PCinR/Homework_Lynum')
+hw_gapminder <- read.csv('hw_gapminder.csv')
+```
+
+```{r}
+mean_lifeExp <- mean(hw_gapminder$lifeExp)
+# want to find the mean of all life expectancy
+mean_lifeExp
+# Jillian, you spelled lifeExp wrong. 
+```
+
+
+```{r}
+small_set <- hw_gapminder[c(1, 2, 3, 4, 1300:1305),
+c('country', 'continent', 'year')]
+small_set
+# You foroget the c before the country, continent, year
+```
+
+
+```{r}
+mean_gdp <- mean(hw_gapminder$gdpPercap, na.rm = T)
+# I want to find the mean of the gdpPercap of all the data
+mean_gdp
+# You sneakily put in NAs. You jerk.
+```
+
+```{r}
+max_country <- hw_gapminder$country[which(hw_gapminder$lifeExp == 
+                                            max(hw_gapminder$lifeExp))]
+max_country
+# You have to use double equals (==)
+```
+
 
