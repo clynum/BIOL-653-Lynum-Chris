@@ -89,6 +89,12 @@ filter(gapminder2, year == 1952 | year == 1972 | year == 2002)
 minpop <- filter(gapminder2, year %in% c(1952, 1972, 2002)) %>%
   group_by(continent, year) %>% select(min(pop)) 
 View(minpop)
+
+gapminder %>%
+  filter(year %in% c(1952, 1972, 2002)) %>%
+  group_by(continent, year) %>%
+  select(min(pop)) %>%
+
 ```
 
 ### 2) Create a graph of the total population of each continent over time
@@ -101,15 +107,19 @@ prob2 + geom_bar(stat = 'identity')
 ### 3) Calculate the mean gdpPercap for each country
 
 ```{r}
+group_by(gapminder, country) %>% 
+  summarize(mean_gdpP = mean(gdpPercap))
 
 ```
 
 ### 4) Calculate the mean gdp for each country
 
 ```{r}
-group_by(gapminder, country) %>% 
-  mutate(data = gapminder, gdp = gdpPercap * pop)) %>%
-  summarize(mean_gdpP = mean(gdpPercap)) %>%
+gapminder2 %>%
+  group_by(country) %>%
+  mutate(gdp = gdpPercap * pop) %>%
   summarize(mean_gdp = mean(gdp))
+
+
 ```
 

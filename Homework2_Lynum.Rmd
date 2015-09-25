@@ -16,6 +16,7 @@ Plot are made up of layers, just like ogres.
 # load the libraries that I will be using
 library(gapminder)
 library(ggplot2)
+library(dplyr)
 ```
 
 
@@ -24,7 +25,7 @@ plot1 <- ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
                                       color = continent))
 # Jillian, I made the backbone of the plot and wanted to color
 ## by continent
-plot1 + geom_point()
+plot1 + geom_point(aes(shape = factor(continent)))
 # here I added a layer of the points
 ```
 
@@ -34,7 +35,7 @@ plot1 + geom_point()
 # log the shit out of the data
 plot2 <- ggplot(data = gapminder, aes(x = log(gdpPercap), y = lifeExp,
                                       color = continent))
-plot2 + geom_point()
+plot2 + geom_point(aes(shape = factor(continent)))
 # fuck yeah
 ```
 
@@ -42,7 +43,9 @@ plot2 + geom_point()
 
 ```{r}
 plot3 <- ggplot(data = gapminder, aes(x = log(gdpPercap), y = lifeExp))
-plot3 + geom_point(aes(color = continent)) + stat_smooth(method = 'lm')
+plot3 + geom_point(aes(shape = factor(continent),
+                       color = continent)) + 
+  stat_smooth(method = 'lm')
 # had to specify to do coloring by continent in geom_point
 # if I kept it within the original ggplot() there would be a stat_smooth
 ## line for every continent individiually
@@ -52,7 +55,7 @@ plot3 + geom_point(aes(color = continent)) + stat_smooth(method = 'lm')
 
 ```{r}
 plot4 <- ggplot(data = gapminder, aes(x = lifeExp, fill = continent ))
-plot4 + geom_density(aes(alpha = .3)) + facet_wrap(~ year)
+plot4 + geom_density(alpha = .5) + facet_wrap(~ year)
 # fill = continent in the ggplot() otherwise can't get black outline
 ## from geom_density
 ```
@@ -71,13 +74,26 @@ plot5 + geom_boxplot() + facet_wrap(~ year)
 
 ### Plot 6 - ish
 ```{r}
-plot6 <- ggplot(data = gapminder, aes(x = lifeExp, fill = continent ))
-plot6 + geom_density(aes(alpha = .3))
+# Want to plot life expectancy
+# use dplyr to include aggregate values
+# use subset() to select/exclude parts of the dataset
+
+gapminder %>%
+  ggplot(aes(x = lifeExp, fill = continent)) + 
+  geom_density(alpha = 0.5)
+
+# plot6 <- ggplot(data = gapminder, aes(x = lifeExp, fill = continent ))
+# plot6 + geom_density(aes(alpha = .3))
 ```
 
 ### Plot 7
 
 ```{r}
+gapminder %>%
+  filter(continent == 'Asia') %>%
+  ggplot(aes(x = lifeExp)) + geom_density(fill = 'green',
+                                          alpha = 0.5) +
+  geom_vline(xintercept = mean(gapminder$lifeExp))
 
 ```
 
@@ -85,7 +101,23 @@ plot6 + geom_density(aes(alpha = .3))
 ### Plot 8
 
 ```{r}
+gapminder %>%
+  group_by(continent) %>%
+  ggplot(aes(x = lifeExp)) +
+  geom_density() + facet_wrap(~continent)
+```
 
+```{r}
+# have to aggregate means out to plot
+#gapminder %>%
+#  group_by(continent) %>%
+#  mutate()
+plot8 <- ggplot(data = gapminder, aes(x = lifeExp),
+                color = continent)
+plot8 + geom_density() + geom_vline(xintercept =
+                                      mean(gapminder$lifeExp)) +
+  facet_wrap(~continent)
+  
 ```
 
 
