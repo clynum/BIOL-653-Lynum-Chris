@@ -26,7 +26,7 @@ plot1 <- ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
 # Jillian, I made the backbone of the plot and wanted to color
 ## by continent
 plot1 + geom_point(aes(shape = factor(continent)))
-# here I added a layer of the points
+# here I added a layer of the points with diff. shapes
 ```
 
 ### Plot 2
@@ -90,11 +90,32 @@ gapminder %>%
 ### Plot 7
 
 ```{r}
+#subset(airquality, Temp > 80, select = c(Ozone, Temp))
+#subset(airquality, Day == 1, select = -Temp)
+#subset(airquality, select = Ozone:Wind)
+mean(subset(gapminder, continent == 'Asia', select = lifeExp))
+dim(subset(gapminder, continent == 'Asia', select = lifeExp))
+
+subset(gapminder, continent == 'Asia', select = lifeExp) %>%
+  ggplot(aes(x = lifeExp)) + geom_density(fill = 'green',
+                                          alpha = 0.5) + 
+  geom_vline(xintercept = mean(gapminder$lifeExp))
+
+group_by(gapminder, continent == 'Asia') %>%
+  summarize(mean_life = mean(lifeExp)) %>%
+  ggplot(aes(x = lifeExp)) + geom_density(fill = 'green',
+                                          alpha = 0.5) + 
+  geom_vline(xintercept = mean(subset(gapminder,
+                                      continent == 'Asia',
+                                      select = lifeExp)))
+
 gapminder %>%
   filter(continent == 'Asia') %>%
   ggplot(aes(x = lifeExp)) + geom_density(fill = 'green',
                                           alpha = 0.5) +
-  geom_vline(xintercept = mean(gapminder$lifeExp))
+  geom_vline(xintercept = mean(subset(gapminder,
+                                      continent == 'Asia',
+                                      select = lifeExp)))
 
 ```
 
@@ -102,9 +123,14 @@ gapminder %>%
 ### Plot 8
 
 ```{r}
+# Create a data frame of mean lifeExp for each continent
+df8 <- group_by(gapminder, continent) %>%
+  summarize(mean_life = mean(lifeExp))
+
+
 gapminder %>%
   group_by(continent) %>%
-  ggplot(aes(x = lifeExp)) +
+  ggplot(aes(x = lifeExp), fill = continent) +
   geom_density() + facet_wrap(~continent)
 ```
 
@@ -156,7 +182,6 @@ mean_gdp
 max_country <- hw_gapminder$country[which(hw_gapminder$lifeExp == 
                                             max(hw_gapminder$lifeExp))]
 max_country
-# You have to use double equals (==)
+# You have to use double equals (==), duh. 
 ```
-
 
