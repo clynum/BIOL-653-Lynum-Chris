@@ -121,17 +121,27 @@ gapminder %>%
 
 
 ### Plot 8
+```{r}
+ggplot(gapminder, aes(x = lifeExp)) + 
+  geom_density(aes(fill = continent), alpha = 0.5) + 
+  geom_vline(data = ddply(gapminder, 'continent', summarize,
+                          mean_life = mean(lifeExp)),
+             aes(xintercept = mean_life)) +
+  facet_wrap(~ continent)
+```
+
 
 ```{r}
 # Create a data frame of mean lifeExp for each continent
 df8 <- group_by(gapminder, continent) %>%
   summarize(mean_life = mean(lifeExp))
+df8
+mean(gapminder$lifeExp)
 
+ggplot(gapminder, aes(x = lifeExp)) +
+  geom_density() + geom_vline(xintercept = df8[,2]) + 
+  facet_wrap(~ continent)
 
-gapminder %>%
-  group_by(continent) %>%
-  ggplot(aes(x = lifeExp), fill = continent) +
-  geom_density() + facet_wrap(~continent)
 ```
 
 ```{r}
