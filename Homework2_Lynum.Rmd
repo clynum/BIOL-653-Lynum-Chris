@@ -74,11 +74,11 @@ plot5 + geom_boxplot() + facet_wrap(~ year) +
 
 
 
-### Plot 6 - ish
+### Plot 6
 ```{r}
 # Want to plot life expectancy
 # use dplyr to include aggregate values
-# use subset() to select/exclude parts of the dataset
+# possibly use subset() to select/exclude parts of the dataset
 
 gapminder %>%
   ggplot(aes(x = lifeExp, fill = continent)) + 
@@ -91,15 +91,11 @@ gapminder %>%
 ### Plot 7
 
 ```{r}
-#subset(airquality, Temp > 80, select = c(Ozone, Temp))
-#subset(airquality, Day == 1, select = -Temp)
-#subset(airquality, select = Ozone:Wind)
-
-ggplot(data = subset(gapminder, continent %in% c("Asia")),
+ggplot(data = subset(gapminder, continent %in% "Asia"),
        aes(x = lifeExp, fill = continent)) +
   geom_density(fill = 'green', alpha = 0.5) +
   geom_vline(data = subset(gapminder,
-                           continent %in% c("Asia")),
+                           continent %in% "Asia"),
              aes(xintercept = mean(lifeExp))) +
   ggtitle("Life expectancy in Asia")
 
@@ -114,33 +110,6 @@ ggplot(gapminder, aes(x = lifeExp)) +
                           mean_life = mean(lifeExp)),
              aes(xintercept = mean_life)) +
   facet_wrap(~ continent)
-```
-
-
-```{r}
-# Create a data frame of mean lifeExp for each continent
-df8 <- group_by(gapminder, continent) %>%
-  summarize(mean_life = mean(lifeExp))
-df8
-mean(gapminder$lifeExp)
-
-ggplot(gapminder, aes(x = lifeExp)) +
-  geom_density() + geom_vline(xintercept = df8[,2]) + 
-  facet_wrap(~ continent)
-
-```
-
-```{r}
-# have to aggregate means out to plot
-#gapminder %>%
-#  group_by(continent) %>%
-#  mutate()
-plot8 <- ggplot(data = gapminder, aes(x = lifeExp),
-                color = continent)
-plot8 + geom_density() + geom_vline(xintercept =
-                                      mean(gapminder$lifeExp)) +
-  facet_wrap(~continent)
-  
 ```
 
 
