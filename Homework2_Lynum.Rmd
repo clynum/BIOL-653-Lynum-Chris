@@ -12,10 +12,11 @@ Plot are made up of layers, just like ogres.
 
 ### Plot 1
 
-```{r}
+```{r, message = FALSE, warning = F}
 # load the libraries that I will be using
 library(gapminder)
 library(ggplot2)
+library(plyr)
 library(dplyr)
 ```
 
