@@ -20,6 +20,7 @@ library(dplyr)
 ```
 
 
+
 ```{r}
 plot1 <- ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
                                       color = continent))
@@ -93,29 +94,14 @@ gapminder %>%
 #subset(airquality, Temp > 80, select = c(Ozone, Temp))
 #subset(airquality, Day == 1, select = -Temp)
 #subset(airquality, select = Ozone:Wind)
-mean(subset(gapminder, continent == 'Asia', select = lifeExp))
-dim(subset(gapminder, continent == 'Asia', select = lifeExp))
 
-subset(gapminder, continent == 'Asia', select = lifeExp) %>%
-  ggplot(aes(x = lifeExp)) + geom_density(fill = 'green',
-                                          alpha = 0.5) + 
-  geom_vline(xintercept = mean(gapminder$lifeExp))
-
-group_by(gapminder, continent == 'Asia') %>%
-  summarize(mean_life = mean(lifeExp)) %>%
-  ggplot(aes(x = lifeExp)) + geom_density(fill = 'green',
-                                          alpha = 0.5) + 
-  geom_vline(xintercept = mean(subset(gapminder,
-                                      continent == 'Asia',
-                                      select = lifeExp)))
-
-gapminder %>%
-  filter(continent == 'Asia') %>%
-  ggplot(aes(x = lifeExp)) + geom_density(fill = 'green',
-                                          alpha = 0.5) +
-  geom_vline(xintercept = mean(subset(gapminder,
-                                      continent == 'Asia',
-                                      select = lifeExp)))
+ggplot(data = subset(gapminder, continent %in% c("Asia")),
+       aes(x = lifeExp, fill = continent)) +
+  geom_density(fill = 'green', alpha = 0.5) +
+  geom_vline(data = subset(gapminder,
+                           continent %in% c("Asia")),
+             aes(xintercept = mean(lifeExp))) +
+  ggtitle("Life expectancy in Asia")
 
 ```
 
