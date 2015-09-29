@@ -41,6 +41,8 @@ group_by(gapminder, continent)
 group_by(gapminder, continent) %>%
   summarize(mean_life = mean(lifeExp))
 
+group_by(gapminder, continent == 'Asia') %>%
+  summarize(mean_life = mean(lifeExp))
 
 # if you want something to happen to every row of the data
 # adds a column to data set
@@ -67,13 +69,17 @@ gapminder2
 ```
 
 
-## Practice
+## Practice ##########
+#############################################################
+####### NOTHING BELOW THIS IS CORRECT ########################
+#############################################################
 
 ### 1) For each continent, what country had the smallest population in 1952, 1972, and 2002?
 
 So I want to separate for each continent
 Need to know the smallest population in each country
 for three different years
+
 ```{r}
 group_by(gapminder, continent)
 filter(gapminder, year == c(1952, 1972, 2002)) %>% 
