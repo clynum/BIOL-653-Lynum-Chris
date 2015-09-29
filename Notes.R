@@ -57,8 +57,18 @@ gapminder2 %>%
 # 2. What countries have the best and worst life expectancies in each continent?
 
 ### Challenge ####
-# 3. Which country experienced the sharpest 5 year drop in life expectancy (sharpest drop between data points)?
+# 3. Which country experienced the sharpest 5 year drop 
+## in life expectancy (sharpest drop between data points)?
 
 
 
 
+
+mean(group_by((filter(gapminder, year == 2002)),
+              continent)$pop)
+mean(filter(gapminder, year == 2002)$pop) # same thing
+
+gapminder %>%
+  filter(year == 2002) %>%
+  #group_by(continent) %>%
+  summarize(mean_pop = mean(pop))
