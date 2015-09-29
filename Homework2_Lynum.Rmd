@@ -46,7 +46,7 @@ plot2 + geom_point(aes(shape = factor(continent)))
 ```{r}
 plot3 <- ggplot(data = gapminder, aes(x = log(gdpPercap), y = lifeExp))
 plot3 + geom_point(aes(shape = factor(continent),
-                       color = continent)) + 
+                       color = continent)) +
   stat_smooth(method = 'lm')
 # had to specify to do coloring by continent in geom_point
 # if I kept it within the original ggplot() there would be a stat_smooth
