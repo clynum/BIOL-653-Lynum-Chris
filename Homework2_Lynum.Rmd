@@ -7,7 +7,7 @@ output: html_document
 
 ## Part 1 - Make these plots!
 
-Making plots using the gampinder dataset.
+Making plots using the gapminder dataset.
 Plot are made up of layers, just like ogres.
 
 ### Plot 1
