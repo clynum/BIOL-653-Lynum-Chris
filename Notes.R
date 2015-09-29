@@ -42,10 +42,22 @@ gapminder2 %>%
   filter(year %in% c(1952, 1972, 2002)) %>%
   # filter(year == 1952 | year == 1972 | year == 2002)
   group_by(continent, year) %>%
-  slice(which.min(pop))
+  slice(which.min(pop)) %>%
+  ungroup() %>%
+  select(country, year, pop)
+  # select(country, year, pop)
   #summarize(min_pop = min(pop)) # <- doesn't tell you country
   
+# 1. How many countries are there on each continent?
 
+gapminder2 %>%
+  group_by(continent) %>%
+
+
+# 2. What countries have the best and worst life expectancies in each continent?
+
+### Challenge ####
+# 3. Which country experienced the sharpest 5 year drop in life expectancy (sharpest drop between data points)?
 
 
 
