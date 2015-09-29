@@ -27,7 +27,8 @@ plot1 <- ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
                                       color = continent))
 # Jillian, I made the backbone of the plot and wanted to color
 ## by continent
-plot1 + geom_point(aes(shape = factor(continent)))
+plot1 + geom_point(aes(shape = factor(continent))) +
+  scale_shape(guide = 'none')
 # here I added a layer of the points with diff. shapes
 ```
 
@@ -35,9 +36,11 @@ plot1 + geom_point(aes(shape = factor(continent)))
 
 ```{r}
 # log the shit out of the data
-plot2 <- ggplot(data = gapminder, aes(x = log(gdpPercap), y = lifeExp,
+plot2 <- ggplot(data = gapminder, aes(x = log(gdpPercap), 
+                                      y = lifeExp,
                                       color = continent))
-plot2 + geom_point(aes(shape = factor(continent)))
+plot2 + geom_point(aes(shape = factor(continent))) +
+  scale_shape(guide = 'none')
 # fuck yeah
 ```
 
@@ -47,6 +50,8 @@ plot2 + geom_point(aes(shape = factor(continent)))
 plot3 <- ggplot(data = gapminder, aes(x = log(gdpPercap), y = lifeExp))
 plot3 + geom_point(aes(shape = factor(continent),
                        color = continent)) +
+  scale_shape(guide = 'none') + 
+  #theme(legend.position = 'none') +
   stat_smooth(method = 'lm')
 # had to specify to do coloring by continent in geom_point
 # if I kept it within the original ggplot() there would be a stat_smooth
