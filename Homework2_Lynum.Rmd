@@ -24,7 +24,7 @@ library(dplyr)
 ```{r}
 plot1 <- ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
                                       color = continent))
-# Jillian, I made the backbone of the plot and wanted to color
+# I made the backbone of the plot and wanted to color
 ## by continent
 plot1 + geom_point(aes(shape = factor(continent))) +
   scale_shape(guide = 'none')
