@@ -72,14 +72,14 @@ img {
 <h2>Part 1 - Make these plots!</h2>
 <p>Making plots using the gapminder dataset. Plot are made up of layers, just like ogres.</p>
 <div id="plot-1" class="section level3">
-<h3>Plot 1</h3>
+<h3>Plot 1!</h3>
 <pre class="r"><code># load the libraries that I will be using
 library(gapminder)
 library(ggplot2)
 library(dplyr)</code></pre>
 <pre class="r"><code>plot1 &lt;- ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp,
                                       color = continent))
-# Jillian, I made the backbone of the plot and wanted to color
+# I made the backbone of the plot and wanted to color
 ## by continent
 plot1 + geom_point(aes(shape = factor(continent))) +
   scale_shape(guide = 'none')</code></pre>
