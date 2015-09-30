@@ -41,6 +41,10 @@ group_by(gapminder, continent)
 group_by(gapminder, continent) %>%
   summarize(mean_life = mean(lifeExp))
 
+gapminder %>%
+  group_by(continent) %>%
+  summarize(mean_life = mean(lifeExp))
+
 group_by(gapminder, continent == 'Asia') %>%
   summarize(mean_life = mean(lifeExp))
 
