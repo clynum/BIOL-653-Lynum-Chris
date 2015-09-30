@@ -16,7 +16,6 @@ Plot are made up of layers, just like ogres.
 # load the libraries that I will be using
 library(gapminder)
 library(ggplot2)
-library(plyr)
 library(dplyr)
 ```
 
@@ -35,7 +34,7 @@ plot1 + geom_point(aes(shape = factor(continent))) +
 ### Plot 2
 
 ```{r}
-# log the shit out of the data
+# log the shit out of the data to make it easier to look at
 plot2 <- ggplot(data = gapminder, aes(x = log(gdpPercap), 
                                       y = lifeExp,
                                       color = continent))
@@ -50,8 +49,7 @@ plot2 + geom_point(aes(shape = factor(continent))) +
 plot3 <- ggplot(data = gapminder, aes(x = log(gdpPercap), y = lifeExp))
 plot3 + geom_point(aes(shape = factor(continent),
                        color = continent)) +
-  scale_shape(guide = 'none') + 
-  #theme(legend.position = 'none') +
+  scale_shape(guide = 'none') + #to get rid of factor legend
   stat_smooth(method = 'lm')
 # had to specify to do coloring by continent in geom_point
 # if I kept it within the original ggplot() there would be a stat_smooth
@@ -97,24 +95,30 @@ gapminder %>%
 ### Plot 7
 
 ```{r}
-ggplot(data = subset(gapminder, continent %in% "Asia"),
-       aes(x = lifeExp, fill = continent)) +
-  geom_density(fill = 'green', alpha = 0.5) +
-  geom_vline(data = subset(gapminder,
-                           continent %in% "Asia"),
-             aes(xintercept = mean(lifeExp))) +
+gapAsia <- 
+gapminder %>%
+  filter(continent == 'Asia')
+# created df that was just Asia
+
+ggplot(data = gapAsia, aes(x = lifeExp)) +
+  geom_density(fill = 'green', alpha  = 0.5) +
+  geom_vline(aes(xintercept = mean(lifeExp))) +
   ggtitle("Life expectancy in Asia")
 
+#subsetted data originally to get just Asia and plotted lifeExp
+# then subsetted again to get the line
 ```
 
 
 ### Plot 8
 ```{r}
+plot8_df <- 
+group_by(gapminder, continent) %>%
+  summarize(mean_life = mean(lifeExp))
+
 ggplot(gapminder, aes(x = lifeExp)) + 
-  geom_density(aes(fill = continent), alpha = 0.5) + 
-  geom_vline(data = ddply(gapminder, 'continent', summarize,
-                          mean_life = mean(lifeExp)),
-             aes(xintercept = mean_life)) +
+  geom_density(aes(fill = continent), alpha = 0.5) +
+  geom_vline(data = plot8_df, aes(xintercept = mean_life)) +
   facet_wrap(~ continent)
 ```
 
