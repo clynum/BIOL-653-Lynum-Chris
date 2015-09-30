@@ -10,7 +10,7 @@ output: html_document
 Making plots using the gapminder dataset.
 Plot are made up of layers, just like ogres.
 
-### Plot 1
+### Plot 1!
 
 ```{r, message = FALSE, warning = F}
 # load the libraries that I will be using
