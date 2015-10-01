@@ -72,3 +72,115 @@ gapminder %>%
   filter(year == 2002) %>%
   #group_by(continent) %>%
   summarize(mean_pop = mean(pop))
+
+
+#### October 1, 2015 ####
+
+# Readings on Subsetting
+
+x <- c(2.1, 4.2, 3.3, 5.4)
+
+x[c(3,1)]
+x[order(x)]
+x[c(1,1)]
+x[c(2.1, 2.9)] # truncated to integers (2, 2)
+
+x[-c(3, 1)] # everything but 3rd and 1st numbers
+
+### Logical Vectors ###
+
+x[c(T, T, F, F)] # only the first two?
+
+x[x > 3]
+
+### A little confused by the shorter logical vectors
+
+y <- setNames(x, letters[1:4])
+y
+
+y[c('d', 'c', 'a')]
+y[c('a', 'a', 'a')]
+
+# when subsetting with [, names are always matched exactly 
+z <- c(abc = 1, def = 2)
+z[c('a', 'd')]
+z
+
+a <- matrix(1:9, nrow = 3)
+a
+
+colnames(a) <- c('A', 'B', 'C')
+a[1:2, ] # first two rows
+
+a[c(T, F, T), c('B', 'A')]
+# first and third rows, only columns B, then A
+
+a[0, -2] # don't really get what negative 2 does?
+
+
+# Data frames possess characteristics of both lists and matrices
+
+#If you subset with single vectors = like list
+#subset with two vectors = like matrices
+
+df <- data.frame(x = 1:3, y = 3:1, z = letters[1:3])
+df
+
+df[df$x == 2, ] # wherever row = 2
+
+df[c(1,3), ] # first and third rows
+
+# selecting rows
+## like a list
+df[c('x', 'z')]
+
+## like a matrix
+df[, c('x', 'z')]
+
+# if selecting single column, matrix subsetting simplifies
+## list subsetting does not
+
+str(df['x']) # like a list
+str(df[, 'x']) # like a matrix
+
+# fix these
+
+# a. double equals
+# b. can't have negatives
+# c. needs comma after 5
+# d. 
+mtcars[mtcars$cyl == 4 | 6, ] # did this work?
+
+# [[ can only return a single value, un like [
+# $ shorthand for [[ combined with character subsetting
+# [[ for lists
+
+a <- list(a = 1, b = 2)
+a
+a[[1]]
+a[['a']]
+
+# simplifying = returns simplest possible data structure
+# preserving = keeps structure of the output the same as input
+
+
+
+#1. What are three subsetting operators
+
+#[, [[, $. 
+
+#2. What is a vector
+
+
+
+# 3. What types of vectors are there
+## (you already saw at least 3)?
+characters, factors? 
+
+#4. What are 5 diff. data types?
+Atomic vectors, lists, matrices, arrays, data frames
+
+# 5. If this was enough,
+## you can stop at subsetting & assign. heading
+
+
