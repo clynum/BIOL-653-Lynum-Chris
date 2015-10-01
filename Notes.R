@@ -74,7 +74,7 @@ gapminder %>%
   summarize(mean_pop = mean(pop))
 
 
-#### October 1, 2015 ####
+#### Reading for Oct 1, 2015 ####
 
 # Readings on Subsetting
 
@@ -149,7 +149,8 @@ str(df[, 'x']) # like a matrix
 # b. can't have negatives
 # c. needs comma after 5
 # d. 
-mtcars[mtcars$cyl == 4 | 6, ] # did this work?
+head(mtcars[mtcars$cyl == 4 | 6, ]) 
+head(mtcars[mtcars$cyl == 4 | mtcars$cyl ==6, ])
 
 # [[ can only return a single value, un like [
 # $ shorthand for [[ combined with character subsetting
@@ -175,12 +176,118 @@ a[['a']]
 
 # 3. What types of vectors are there
 ## (you already saw at least 3)?
-characters, factors? 
+#  characters, factors, numbers, integers, logical? 
 
 #4. What are 5 diff. data types?
-Atomic vectors, lists, matrices, arrays, data frames
+#  Atomic vectors, lists, matrices, arrays, data frames
 
 # 5. If this was enough,
 ## you can stop at subsetting & assign. heading
+
+
+#### Class October 1, 2015 ####
+
+# what do I mean when I say indexing?
+
+# get the 5th and 10th element of the vector:
+
+meow <- c(1, 2, 3, 4, 10, 11, 12)
+meow[c(5, length(meow))] # there is no 10 elements
+
+# what does str() do?
+
+str(meow)
+# gives you the structure of the object
+
+
+######### OBJECTS IN R ##
+
+# Atomic Vectors ##
+
+dbl_vec <- c(1,2, 1.3, 1.4, 2.5)
+str(dbl_vec)
+typeof(dbl_vec) # tells you the type of
+class(dbl_vec)
+
+# creating an integer vector (numeric, but discrete)
+int_vec <- c(1, 2, 3, 4) # this is still a double
+int_vec <- c(1L, 2L, 3L, 4L) # L just means it's an integer
+typeof(int_vec) # as an integer
+int_vect <- c(1:4)
+typeof(int_vect) # also an integer
+
+
+# LOGICAL vectors #
+log_vec <- c(T, F, T)
+typeof(log_vec)
+log_vec
+sum(log_vec) # because trues = 1, falses = 0
+
+# character vectors
+
+char_vec <- c('a', 'b', 'c')
+char_vec
+typeof(char_vec)
+
+
+
+
+
+
+
+# Coercion #
+
+z <- read.csv(text = "value\n12\n1\n.\n9")
+z
+str(z) # factor with four levels
+typeof(z) # it's a list
+typeof(z[1])
+typeof(z[[1]])
+
+# factors name these numbers
+as.double(z[[1]]) # gives us 3, 2, 1, 4 instead of 12, 1, ., 9
+# numeric is a broader representation of numbers
+
+as.character(z[[1]]) # first have to get the actual characters
+# then change them to numbers
+as.double(as.character(z[[1]])) # gives us the 12, 1, ., 9
+# period turns into NA
+
+## if you highlight a section and then add a
+## parentheses it puts both of them on there
+
+zztop <- read.csv(text = "value\n12\n1\n.\n9",
+                  stringsAsFactors = F)
+typeof(zztop[[1]])
+# it's a character now because we told it to 
+## NOT string as factor
+as.double(zztop[[1]])
+# now we didn't have to define as character first before
+## turning into actually numbers
+
+### MATRICES, ARRAYS, AND DATA FRAMES ###
+
+# 2 dimensional structures
+
+# Matrix
+
+a <- matrix(1:6, ncol = 3, nrow = 2)
+a
+str(a)
+a[, 3] # third column in a
+
+length(a)
+nrow(a)
+dim(a)
+
+x <- c('a', 'b', 'c', 'd', 'e', 'f')
+a <- matrix(x, ncol = 3, nrow = 2)
+a
+
+x <- c(x, 1, 2, 3)
+x
+
+library(gapminder)
+str(gapminder)
 
 
