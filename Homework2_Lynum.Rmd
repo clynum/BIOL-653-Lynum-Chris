@@ -117,7 +117,7 @@ group_by(gapminder, continent) %>%
   summarize(mean_life = mean(lifeExp))
 
 ggplot(gapminder, aes(x = lifeExp)) + 
-  geom_density(aes(fill = continent), alpha = 0.5) +
+  geom_density(aes(fill = continent), alpha = 0.6) +
   geom_vline(data = plot8_df, aes(xintercept = mean_life)) +
   facet_wrap(~ continent)
 ```
