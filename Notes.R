@@ -1,5 +1,7 @@
 ###### 29 September 2015 ########
-
+library(ggplot2)
+library(gapminder)
+library(dplyr)
 # 1. Calclate the mean gdpPercap for each country.
 
 gapminder %>%
