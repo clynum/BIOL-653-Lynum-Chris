@@ -293,3 +293,39 @@ library(gapminder)
 str(gapminder)
 
 
+#### October 6, 2015 ####
+
+## SUBSETTING AND FOR LOOPS
+
+
+# select rows 10 to 20 of the country and life expectency columns
+
+gapminder[10:20, c('country', 'lifeExp')]
+
+# select rows 1 to 10, 20, and 100 in gapminder
+
+gapminder[c(1:10, 20, 100),]
+
+
+## THREE DIFF SUBSETS ##
+# 1. object[] - multiple values
+
+# 2. object$ - named values
+
+# 3. object[[]] - lists (mostly)
+
+## PEPPER PACKETS! (Subsetting nested objects)
+
+pp1 <- c('g1', 'g2', 'g3', 'g4')
+pp2 <- pp1
+pp3 <- pp1
+
+shaker <- list(pp1, pp2, pp3)
+# get pepper packet 1
+shaker[[1]]
+# what's diff between shaker[1] 
+  ## brings back a list instead of character
+# get second grain out of pepper packet 1
+shaker[[1]][[2]]
+shaker[[1]][2]
+
