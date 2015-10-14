@@ -52,20 +52,45 @@ gapminder2 %>%
   
 # 1. How many countries are there on each continent?
 
-gapminder2 %>%
-  group_by(continent) %>%
-
 
 # 2. What countries have the best and worst life expectancies in each continent?
+
+#by continent
+#which country
+#max(lifeExp)
+#min(lifeExp)
+
+gapminder2 %>%
+  group_by(continent) %>%
+  slice(which.min(lifeExp))
+
+gapminder2 %>%
+  group_by(continent) %>%
+  slice(which.max(lifeExp))
 
 ### Challenge ####
 # 3. Which country experienced the sharpest 5 year drop 
 ## in life expectancy (sharpest drop between data points)?
 
 
+gapminder2 %>%
+  group_by(country) %>%
+  arrange(year) %>%
+  # grouping works on each individual chunk
+  # arrange sorts - think about sorting in excel
+  mutate(diff = lifeExp - lead(lifeExp)) %>%
+  # lead = previous now
+  # lag = next row
+  # mutate creates a whole new column
+  group_by(continent) %>%
+  # modified this problem slightly to 
+  # find sharpest drop for each continent
+  # (country and year)
+  slice(which.min(diff))
 
 
 
+######### NOTES AGAIN ###
 mean(group_by((filter(gapminder, year == 2002)),
               continent)$pop)
 mean(filter(gapminder, year == 2002)$pop) # same thing
@@ -329,3 +354,15 @@ shaker[[1]]
 shaker[[1]][[2]]
 shaker[[1]][2]
 
+#### October 13, 2015 ####
+
+# FOR LOOPS? ##
+
+foo <- c(7, 10, 11, 52, 55, 83, 101, 9)
+foo[1]
+foo[4]
+
+for (i in 1:5){
+  x <- foo[i] + 2
+  print(x)
+}
