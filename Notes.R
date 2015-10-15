@@ -50,6 +50,9 @@ gapminder2 %>%
   # select(country, year, pop)
   #summarize(min_pop = min(pop)) # <- doesn't tell you country
   
+
+### Challenge ####
+
 # 1. How many countries are there on each continent?
 
 
@@ -68,7 +71,7 @@ gapminder2 %>%
   group_by(continent) %>%
   slice(which.max(lifeExp))
 
-### Challenge ####
+
 # 3. Which country experienced the sharpest 5 year drop 
 ## in life expectancy (sharpest drop between data points)?
 
@@ -366,3 +369,49 @@ for (i in 1:5){
   x <- foo[i] + 2
   print(x)
 }
+
+
+#### October 15, 2015 ####
+
+# MORE FOR LOOPS ###
+
+animals <- c('wombat', 'kangaroo', 'whale shark',
+             'fox', 'snail')
+# A vector, set of objects, list of things
+
+for (animal in animals) {
+  len <- nchar(animal)
+  print(len)
+}
+
+for (i in 1:length(animals)) {
+  len <- nchar(animals[i])
+  print(len)
+}
+
+# write a for loop that calculates the square of 1-10
+
+for (i in 1:10) {
+  y <- i^2
+  print(y)
+}
+
+sq <- vector(length = 10)
+for (i in 1:10) {
+  sq[i] <- i^2
+}
+
+
+for (i in 1:10){
+  sums <- sums[i + 1] + sum[i]
+}
+
+
+# Calculate the cumulative sum of the values 1:10
+x <- 0
+for (i in 1:10){
+  #browser()
+  x <- x + i
+  print(x)
+}
+
