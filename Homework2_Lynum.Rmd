@@ -41,19 +41,26 @@ plot2 <- ggplot(data = gapminder, aes(x = log(gdpPercap),
 plot2 + geom_point(aes(shape = factor(continent))) +
   scale_shape(guide = 'none')
 # fuck yeah
+
+# An alternative is to change the scale of the x axis:
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, colour = continent, shape = continent)) + 
+  geom_point() +
+  scale_x_log10()
 ```
 
 ### Plot 3
 
 ```{r}
 plot3 <- ggplot(data = gapminder, aes(x = log(gdpPercap), y = lifeExp))
-plot3 + geom_point(aes(shape = factor(continent),
-                       color = continent)) +
+plot3 + 
+  geom_point(aes(shape = factor(continent), color = continent)) +
   scale_shape(guide = 'none') + #to get rid of factor legend
   stat_smooth(method = 'lm')
 # had to specify to do coloring by continent in geom_point
 # if I kept it within the original ggplot() there would be a stat_smooth
 ## line for every continent individiually
+
+# JD: I don't think you need the factor() around continent.
 ```
 
 ### Plot 4
@@ -63,6 +70,14 @@ plot4 <- ggplot(data = gapminder, aes(x = lifeExp, fill = continent ))
 plot4 + geom_density(alpha = .5) + facet_wrap(~ year)
 # fill = continent in the ggplot() otherwise can't get black outline
 ## from geom_density
+
+# You can also tell the geom_smooth to use only a single group:
+ggplot(data = gapminder, aes(x = log10(gdpPercap), y=lifeExp, colour = continent, shape = continent)) +
+  geom_point() +
+  geom_smooth(method = lm, aes(group = 1))
+
+# If you want more info on the group argument of aes() check out ?ggplot2::group
+
 ```
 
 
@@ -107,6 +122,15 @@ ggplot(data = gapAsia, aes(x = lifeExp)) +
 
 #subsetted data originally to get just Asia and plotted lifeExp
 # then subsetted again to get the line
+
+
+# JD: It can be preferable when the object is small, to create the data subset 
+# within the ggplot so that you don't end up with many little objects running 
+# filling up your workspace. 
+ggplot(filter(gapminder, lifeExp, continent), aes(x = lifeExp, fill = continent)) + 
+  geom_density(alpha = 0.5) + 
+  geom_vline(xintercept = mean(lifeExp))
+
 ```
 
 
