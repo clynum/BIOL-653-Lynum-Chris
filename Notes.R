@@ -493,29 +493,27 @@ for (i in 1:10) {
 
 
 
-Including conditional statements
-A conditional statement is an if this, do that. In programming, you’ll hear people talk about if statements, or if/else statements: if this then that else do something different.
+#Including conditional statements
+#A conditional statement is an if this, do that. In programming, you’ll hear people talk about if statements, or if/else statements: if this then that else do something different.
 
-If statements test whether a condition (e.g., x > 5, value == max_value, country == 'Canada') is TRUE or FALSE.
-Before you begin, if you have not used if/else statements before checkout at least this first link to get you going. This first link is nice and bare bones, getting to the how to right away.
+#If statements test whether a condition (e.g., x > 5, value == max_value, country == 'Canada') is TRUE or FALSE.
+#Before you begin, if you have not used if/else statements before checkout at least this first link to get you going. This first link is nice and bare bones, getting to the how to right away.
 
-http://www.programiz.com/r-programming/if-else-statement
-If you would like more to read, I often remind myself of how to write if/else statements from these:
+#http://www.programiz.com/r-programming/if-else-statement
+#If you would like more to read, I often remind myself of how to write if/else statements from these:
   
-  ‘How to Use If Statements in R for Dummies’
+#  ‘How to Use If Statements in R for Dummies’
 
-‘How to Use If…Else Statements in R for Dummies’
+# ‘How to Use If…Else Statements in R for Dummies’
 
 
 
-6) Make a vector where each entry is TRUE or FALSE, based on whether it’s index is even or odd.
+# 6) Make a vector where each entry is TRUE or FALSE, based on whether it’s index is even or odd.
 
 x <- 1:10
 
 
-7)
-
-Run this code to set yourself up for question 7.
+# 7) Run this code to set yourself up for question 7.
 
 taxa <- c('Coral', 'fish', 'Fish',
           'Phytoplankton', 'coral', 'phytoplankton',
@@ -530,10 +528,10 @@ counts <- round(runif(min = 10, max = 500, n = 100))
 taxa_counts <- data.frame(taxa = taxa_values, abundance = counts)
 
 
-a) Using dplyr, calculate the mean abundance of each taxonomic group, what do you notice about the output? Is it what you would expect?
+#a) Using dplyr, calculate the mean abundance of each taxonomic group, what do you notice about the output? Is it what you would expect?
 
 
 
-b) Hopefully not. What’s going on? Can you fix it?
+#b) Hopefully not. What’s going on? Can you fix it?
 
-If you’re struggling to figure out what to do, think about how you would go about solving the problem in excel, this might help you figure out what you should try and google. (otherwise I’ll give you a hint about a useful function to use here).
+#If you’re struggling to figure out what to do, think about how you would go about solving the problem in excel, this might help you figure out what you should try and google. (otherwise I’ll give you a hint about a useful function to use here).
