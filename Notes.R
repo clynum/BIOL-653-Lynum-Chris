@@ -415,3 +415,125 @@ for (i in 1:10){
   print(x)
 }
 
+
+#### October 20, 2015 ####
+
+mat <- matrix(1:100, nrow = 10, ncol = 10)
+
+for (i in length(mat)){
+  print(i)
+}
+
+mat7 <- mat*7
+mat7
+
+set.seed(1)
+x <- round(runif(min = 10, max = 100, n = 15))
+x
+
+# write a for loop to add 'n =' to the list
+
+
+for (i in 1:10) {
+  print(2 ^ i)
+}
+
+# 1) Print each value of this matrix.
+
+mat <- matrix(1:100, nrow = 10, ncol = 10)
+
+for (i in mat){
+  print(i)
+}
+
+# 2) Multiply each value in this matrix by 7 and store it in a 10 x 10 matrix
+
+mat <- matrix(1:100, nrow = 10, ncol = 10)
+
+for (i in length(mat)){
+  
+}
+
+# 3a) Print these values as part of a string that looks something like 'n = 16'.
+
+
+set.seed(1)
+x <- round(runif(min = 10, max = 100, n = 15))
+
+for (i in x){
+  counts <- paste('n = ', i)
+  print(counts)
+}
+
+
+
+# b) Now modify this loop to store these strings in a new vector called counts.
+
+set.seed(1)
+x <- round(runif(min = 10, max = 100, n = 15))
+
+counts <- rep(NA, 15)
+for (i in x){
+  counts <- paste('n = ', i)
+  print(counts)
+}
+
+
+counts
+
+# 4) Make a vector for which each entry is 2 raised to the power of it’s index (ex: the 3rd item in the vector is equal to 2^3).
+
+
+for (i in 1:10) {
+  2 ^ i
+}
+
+
+# 5) Make a matrix where each entry, using indexes i for row and j for column, is equivalent to i*j. Your final output should look like:
+
+
+
+Including conditional statements
+A conditional statement is an if this, do that. In programming, you’ll hear people talk about if statements, or if/else statements: if this then that else do something different.
+
+If statements test whether a condition (e.g., x > 5, value == max_value, country == 'Canada') is TRUE or FALSE.
+Before you begin, if you have not used if/else statements before checkout at least this first link to get you going. This first link is nice and bare bones, getting to the how to right away.
+
+http://www.programiz.com/r-programming/if-else-statement
+If you would like more to read, I often remind myself of how to write if/else statements from these:
+  
+  ‘How to Use If Statements in R for Dummies’
+
+‘How to Use If…Else Statements in R for Dummies’
+
+
+
+6) Make a vector where each entry is TRUE or FALSE, based on whether it’s index is even or odd.
+
+x <- 1:10
+
+
+7)
+
+Run this code to set yourself up for question 7.
+
+taxa <- c('Coral', 'fish', 'Fish',
+          'Phytoplankton', 'coral', 'phytoplankton',
+          'zooplankton', 'Zooplankton',
+          'Echinoderms', 'echinoderms', 
+          'Cephalopods', 'cephalopods')
+
+taxa_values <- sample(taxa, size = 100, replace = TRUE)
+set.seed(1)
+counts <- round(runif(min = 10, max = 500, n = 100))
+
+taxa_counts <- data.frame(taxa = taxa_values, abundance = counts)
+
+
+a) Using dplyr, calculate the mean abundance of each taxonomic group, what do you notice about the output? Is it what you would expect?
+
+
+
+b) Hopefully not. What’s going on? Can you fix it?
+
+If you’re struggling to figure out what to do, think about how you would go about solving the problem in excel, this might help you figure out what you should try and google. (otherwise I’ll give you a hint about a useful function to use here).
