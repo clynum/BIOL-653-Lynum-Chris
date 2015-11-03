@@ -535,3 +535,177 @@ taxa_counts <- data.frame(taxa = taxa_values, abundance = counts)
 #b) Hopefully not. What’s going on? Can you fix it?
 
 #If you’re struggling to figure out what to do, think about how you would go about solving the problem in excel, this might help you figure out what you should try and google. (otherwise I’ll give you a hint about a useful function to use here).
+
+
+
+#### October 27, 2015 ####
+
+# Functions? 
+
+# DISCRETE TIME LOGISTIC POPULATION
+
+# EQUATION
+
+# Nt=Nt−1+r∗Nt−1∗(1−Nt−1/K)
+
+# Given a starting population N1 of 2 individuals, a per capita growth rate of r=1, and carrying capacity of k=1000, how many individuals should there be in the next generation? I’ll give you a start for how I’d start to set myself up to calculate this in R.
+
+N_1 <- 2
+r <- 1
+K <- 1000
+N_2 <- N_1 + (r*N_1) * (1-(N_1/K))
+N_2
+# Now calculate the population when t = 3 (generation 3)
+
+N_3 <- N_2 + (r*N_2) * (1-(N_2/K))
+N_3
+
+# Now calculate the population when t = 4 (generation 4)
+
+N_4 <- N_3 + (r*N_3) * (1-(N_3/K))
+N_4
+
+
+# MAKE IT A FUNCITON 
+
+dgrowth <- function(ninit, r, K, ngen) {
+  n <- rep(NA, ngen)
+  n[1] <- ninit
+  
+  for (i in 2:ngen) {
+    n[i] = n[i-1] + (r*n[i-1]) * (1-(n[i-1]/K)) 
+    # calculate population size - hint eqn!
+  }
+  return(n) # return value
+}
+
+dgrowth(ninit = 1, r = 1, K = 1000, ngen = 100)
+
+# First, let’s make a data frame where we bind one column of time values with our vector/column of population size at time step t (calcuated using our handy function). This time let’s look at 100 time steps.
+
+ngen = 100
+pop_100 <- dgrowth(ninit = 1, r = 1, K = 1000, ngen = 100)
+time_100 <- rep(1:ngen)
+pop_df <- data.frame(pop_100, time_100)
+
+library(ggplot2)
+ggplot(data = pop_df, aes(x = time_100, y = pop_100)) + 
+  geom_line()
+
+
+#Set your input values in preparation for an upcoming for loop! We will be calculating a set of predicted populations based on values of r from 0.7 to 3 by an increment of 0.1. (remember to look up functions you haven’t seen before!)
+
+ninit = 1
+ngen  = 100
+K = 1000
+r_vals = seq(from = 0.7, to = 3, by = 0.1)
+
+# Before we begin, let’s take a detour to learn a new function that can be super handy. Sometimes you create one vector or dataframe and then want to add rows to it. Describe what is happening in the code below (add comments as notes for future you!)
+
+pop1 <- dgrowth(r = 1, ninit = 1, K = 1000, ngen = 4)
+pop_df1 <- data.frame(N = pop1, time = 1:4)
+
+pop2 <- dgrowth(r = 2, ninit = 1, K = 1000, ngen = 4)
+pop_df2 <- data.frame(N = pop2, time = 1:4)
+
+pops_df <- rbind(pop_df1, pop_df2)
+?rbind
+pops_df
+
+# Ok, back to looping. Let’s start by just making a loop that calculates the populations for 100 generations using our different values of r. You can look at the example for loops
+
+for (i in 1:length(r_vals)) {
+  dgrowth(ninit = 1, ngen = 100, K = 1000, r =  r_vals[i])
+}
+
+# Now let’s store each new set of values in a data.frame called pops.
+
+# Create a dataframe with an initial population using r = 1. This is the data.frame that we will add rows to.
+pops <- data.frame(r = 0.6, t = 1:ngen,
+                   N = dgrowth(r = 0.6, ninit = ninit,
+                               K = K, ngen = ngen))
+
+
+for(i in 1:length(r_vals)){
+  N    <- dgrowth(ninit = 1, ngen = 100, K = 1000, r =  r_vals[i])
+  popr <- data.frame(r = r_vals[i], t = 1:ngen, N = N)
+  pops <- rbind(pops, popr)
+}
+
+## Another way of doing this for loop with r in r_vals that 
+### simplifies the loops 
+## Changing r = r instead of r = r_vals[i] for i in legnth(r_vals)
+for(r in r_vals){
+  N <- dgrowth(ninit = 1, ngen = 100, K = 1000, r = r)
+  popr <- data.frame(r = r, t = 1:ngen, N = N)
+  pops <- rbind(pops, popr)
+}
+head(pops, n = 10L)
+tail(pops, n =)
+
+ggplot(data = pops, aes(x = t, y = N)) + 
+  geom_line() + facet_wrap(~ r)
+
+library(dplyr)
+
+pops %>%
+  group_by(r) %>%
+  slice(91:100) %>%
+  ggplot(aes(x = r, y = N)) + geom_point(fill = as.factor(r),
+                                         color = rainbow(250)) 
+
+
+#### November 3, 2015 ####
+
+# Tidy Data
+library(tidyr)
+library(gapminder)
+
+gap <- 
+  filter(gapminder, grepl("^N", country)) %>% 
+  filter(year %in% c(1952, 1977, 2007)) %>% 
+  slice(1:9) %>% 
+  select(-continent, -gdpPercap, -pop) %>% 
+  mutate(lifeExp = round(lifeExp))
+
+life_exps <- spread(gap, key = year, value = lifeExp)
+
+life_exps
+
+
+long_form <- gather(data = life_exps, key = country, value = year)
+long_form
+
+
+gap_with_cont <- 
+  filter(gapminder, grepl("^N", country)) %>% 
+  filter(year %in% c(1952, 1977, 2007)) %>% 
+  slice(1:9) %>% 
+  select(-gdpPercap, -pop) %>% 
+  mutate(lifeExp = round(lifeExp))
+
+life_exps <- spread(gap_with_cont, key = year, value = lifeExp)
+life_exps
+
+
+
+long_form <- gather(data = life_exps, key = country, value = year, 3:5)
+long_form
+
+#long_form <- gather(data = life_exps, key = country, value = year, '1952', '1977', '2007')
+
+
+set.seed(1)
+counts <- 
+  data.frame(site = c(1, 1, 2, 3, 3, 3),
+             taxon = c("A", "B", "A", "A", "B", "C"),
+             abundance = round(runif(n = 6,
+                                     min = 0, max = 20), 0))
+
+counts
+
+counts_wide <- spread(counts, key = taxon, value = abundance)
+counts_wide
+
+counts_long <- gather(counts_wide, key = site, value = abundance)
+counts_long
