@@ -709,3 +709,152 @@ counts_wide
 
 counts_long <- gather(counts_wide, key = site, value = abundance)
 counts_long
+
+
+#### November 10, 2015 ####
+
+library(tidyr)
+library(dplyr)
+library(gapminder)
+
+
+gap <- 
+  filter(gapminder, grepl("^N", country)) %>% 
+  filter(year %in% c(1952, 1977, 2007)) %>% 
+  slice(1:9) %>% 
+  select(-continent, -gdpPercap, -pop) %>% 
+  mutate(lifeExp = round(lifeExp)) %>% 
+  spread(key = year, value = lifeExp)
+
+gap
+
+gap_with_cont <- 
+  filter(gapminder, grepl("^N", country)) %>% 
+  filter(year %in% c(1952, 1977, 2007)) %>% 
+  slice(1:9) %>% 
+  select(-gdpPercap, -pop) %>% 
+  mutate(lifeExp = round(lifeExp)) %>%
+  spread(key = year, value = lifeExp)
+
+gap_with_cont
+
+
+# when using slice, need to have . in front of data
+# because normal data is a function and it would get confused
+slice(.data = gapminder, c(1,2, 50:55, 100)) 
+# slice gapminder, rows 1&2
+
+
+
+tidied_gap <- gather(data = gap, key = year,
+                     value = lifeExp, -country)
+tidied_gap2 <- gather(data = gap, key = year,
+                     value = lifeExp, 2:4)
+# these both do the same thing. the indeces tell you which
+# columns to look at when tidying. The -country tells you to
+# not look at that column specifically 
+
+
+# data is the data you are wrangling
+# key is how you want to separate data
+## the new column we are going to create!
+# value is the data that was under the key in the previous df
+
+# key is the name of the column that contains the values
+# that were across the top of your data.frame. 
+# Value is the name of the values that populated all of 
+# the cells that you gathered.
+
+tidied_gap
+
+
+tidied_gap_with_cont <- gather(data = gap_with_cont,
+                               key = year, value = lifeExp, 3:5)
+tidied_gap_with_cont
+
+
+tidied_gap_with_cont <- gather(data = gap_with_cont,
+                               key = year, value = lifeExp,
+                               -country, -continent)
+tidied_gap_with_cont
+
+
+spread_gap <- 
+  spread(data = tidied_gap, key = year, value = lifeExp)
+
+tidied_gap
+gap
+
+spread_gap <- 
+  spread(data = tidied_gap, key = year, value = lifeExp)
+# key in this instance is what you want to *spread* across
+# the top (the top columns) and value is the values you want
+# under those columns 
+
+spread_gap
+
+
+set.seed(1)
+counts <- 
+  data.frame(site = c(1, 1, 2, 3, 3, 3),
+             taxon = c("A", "B", "A", "A", "B", "C"),
+             abundance = round(runif(n = 6, min = 0, max = 20),
+                               0))
+counts
+
+# Use spread to put counts into wide form. E.g.,
+counts_wide <- spread(counts, key = taxon, value = abundance,
+                      fill = 0)
+
+counts_wide2 <- spread(counts, key = taxon, value = abundance)
+
+
+counts_wide
+
+
+# Use gather to return counts_wide to long form!
+
+counts_long <- gather(counts_wide, key = site, value = abundance)
+counts_long
+
+counts_long2 <- gather(data = counts_wide, key = column_names,
+                       value = all_the_cells, A, B, C)
+counts_long2
+
+
+
+# In this case when a species wasn’t observed at a site it was because it was never observed. Read the help file for spread to see if there is a simple way to have those NA values fill with zeroes. Then try it!
+
+counts_long_NA <- gather(counts_wide2,
+                         key = site, value = abundance,
+                         na.rm = T)
+
+# With gather it just gets rid of the NAs. No way as of now to 
+# just return them as zeroes. 
+counts_long_NA
+
+
+
+
+
+#What about when I want to spread data but have
+# multiple columns that I want to retain?
+
+# Remind ourselves what the data.frame looks like
+tidied_gap_with_cont
+
+spread_gap <- 
+  spread(data = tidied_gap_with_cont, key = year, value = lifeExp)
+
+# Let's look at it
+spread_gap
+
+
+united_gap <- 
+unite(data = tidied_gap_with_cont,
+      col = location_key, country:continent, sep = "__")
+
+separated_gap <-
+  separate(data = united_gap, col = location_key,
+           into = c('country', 'continent'), sep = "__")
+separated_gap
