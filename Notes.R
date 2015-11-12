@@ -803,7 +803,8 @@ counts <-
 counts
 
 # Use spread to put counts into wide form. E.g.,
-counts_wide <- spread(counts, key = taxon, value = abundance,
+counts_wide <- spread(counts, key = taxon,
+                      value = abundance,
                       fill = 0)
 
 counts_wide2 <- spread(counts, key = taxon, value = abundance)
@@ -818,12 +819,12 @@ counts_long <- gather(counts_wide, key = site, value = abundance)
 counts_long
 
 counts_long2 <- gather(data = counts_wide, key = column_names,
-                       value = all_the_cells, A, B, C)
+                       value = all_the_cells)
 counts_long2
 
 
 
-# In this case when a species wasn’t observed at a site it was because it was never observed. Read the help file for spread to see if there is a simple way to have those NA values fill with zeroes. Then try it!
+# In this case when a species wasn’t observed at a site it was because it was never observed. Read the help file for spread to see if there is a simple way to have those NA values fill with zeroes. Then try it!`
 
 counts_long_NA <- gather(counts_wide2,
                          key = site, value = abundance,
@@ -858,3 +859,170 @@ separated_gap <-
   separate(data = united_gap, col = location_key,
            into = c('country', 'continent'), sep = "__")
 separated_gap
+
+
+#### November 12, 2015 ####
+library(tidyr)
+library(dplyr)
+mammals <- data.frame(site = c(1,1,2,3,3,3), 
+                      taxon = c('Suncus etruscus',
+                                'Sorex cinereus',
+                                'Myotis nigricans',
+                                'Notiosorex crawfordi', 
+                                'Scuncus etruscus',
+                                'Myotis nigricans'),
+                      density = c(6.2, 5.2, 11.0,
+                                  1.2, 9.4, 9.6)
+)
+
+mammals
+
+mammals_wide <-
+  spread(data = mammals, key = taxon, value = density,
+         fill = 0)
+
+mammals_wide
+
+
+mammals_long <-
+  gather(data = mammals_wide, key = taxon, value = density, -site)
+
+# the key just becomes what you'll be naming the column to
+# gather, then you just have to remember to say which
+# things you DON'T want to gather (ie. -site)
+
+# R already knows values across top will be the key
+
+mammals_long
+
+# separate the taxon out
+
+mammals_genus_species <-
+separate(data = mammals_long, col = taxon, into = c('Genus', 'species'))
+
+mammals_genus_species
+
+
+#Sometimes you may need your data in wide format (or go from wide to long to fill in with zeros as we just did in the warm-up), but you have multiple columns of values. We are going to update mammals to include an extra column called counts. Try putting this into wide format, like you did in 1a above.
+
+set.seed(100)
+mammals$counts <- round(runif(n = 6, min = 0, max = 100))
+mammals
+
+
+spread(mammals, key = taxon, value = density, counts)
+spread(mammals, key = taxon, value = c(density, counts))
+
+# So R doesn’t like that we’re trying to spread the data using multiple columns, and that makes sense. How would you even do this by hand? You couldn’t, you’d have to do it in two separate tables like so:
+
+# one for density
+select(.data = mammals, site, taxon, density) %>%
+  spread(key = taxon, value = density, fill = 0)
+
+spread(data = mammals, key = taxon, value = counts,
+       fill = 0)
+
+# one for counts
+select(.data = mammals, site, taxon, counts) %>%
+  spread(key = taxon, value = counts, fill = 0)
+
+
+
+#Is there another way we can do this? This is potentially a lot of repetition.
+
+united_vals <- unite(data = mammals,
+                     col = density_counts, density,
+                     counts, sep = "__")
+united_vals
+
+
+# Notice that we have to be slightly clever with how we fill...
+# How did I figure out that we need to use '0__0'?? 
+#I went through it all with just fill = 0 and R got mad at me
+# because you cannot separate single values 
+# (e.g., 0). So I went back and changed this.
+spread(united_vals, key = taxon, value = density_counts, fill = '0__0')
+
+
+
+mammals %>%
+  unite(col = density_counts, density, counts, 
+        sep = "__") %>%
+  spread(key = taxon, value = density_counts, 
+         fill = '0__0') %>%
+  gather(key = taxon, value = density_counts, -site) %>%
+  separate(col = density_counts,
+           into = c('density', 'counts'), sep = "__")
+
+
+
+
+
+## Exercise
+
+set.seed(7)
+whale_counts <- 
+  data.frame(whale = c('Badger', 'Bamboo', 'Humphrey',
+                       'Kumiko', 'Ester', 'Moby Dick'), 
+             A_2009 = round(runif(n = 6, min = 0,
+                                  max = 20), 0), 
+             A_2010 = round(runif(n = 6, min = 0,
+                                  max = 20), 0),
+             A_2011 = round(runif(n = 6, min = 0,
+                                  max = 20), 0),
+             B_2009 = round(runif(n = 6, min = 0,
+                                  max = 20), 0), 
+             B_2010 = round(runif(n = 6, min = 0,
+                                  max = 20), 0),
+             B_2011 = round(runif(n = 6, min = 0,
+                                  max = 20), 0)
+)
+
+whale_counts
+
+# I know I need to use separate eventually.
+# gather to get them into columns first?
+# but have to be sure to rename them as site. 
+
+
+whale_long <-
+  gather(data = whale_counts, key = site_year, value = counts, -whale)
+
+whale_long
+
+
+whale_sep <- 
+  separate(data = whale_long, col = site_year,
+           into = c('site', 'year'))
+
+whale_sep
+
+# DATA MASHUP
+
+mammals
+
+
+# Lookup table for joins. Small mammal metabolic data.
+#sci_name <- c('Suncus etruscus', 'Sorex cinereus', 'Myotis nigricans' ,'Notiosorex crawfordi')
+genus <- c('Suncus', 'Sorex', 'Myotis' ,'Notiosorex')
+species <- c('etruscus', 'cinereus',
+             'nigricans', 'crawfordi')
+order <- c('Soricomorpha', 'Soricomorpha',
+           'Chiroptera', 'Soricomorpha')
+family_common <- c('Shrews', 'Shrews',
+                   'Vesper Bats', 'Shrews')
+body_temp <- c(38.7, 38.7, 99999, 37.6)
+body_mass <- c(2.4, 3.5, 3.7, 4)
+basal_metabolism <- c(0.08, 0.176, 0.27, 0.074)
+
+metabolic <- 
+  data.frame(genus = genus, species = species,
+             order = order, 
+             family_common = family_common,
+             body_temp = body_temp, 
+             body_mass = body_mass, 
+             basal_metabolism = basal_metabolism)
+
+metabolic
+
+
