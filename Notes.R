@@ -1026,3 +1026,59 @@ metabolic <-
 metabolic
 
 
+#### November 17, 2015 ####
+library(tidyr)
+## RECOMMENDED TO ALWAYS stringAsFactors = F
+counts <- read.csv(file = 
+                     'datasets/mammal_count_data.csv',
+                   stringsAsFactors = F)
+str(counts)
+sites  <- read.csv(file = 
+                     'datasets/mammal_fake_site_data.csv',
+                   stringsAsFactors = F)
+str(sites)
+# WOAH THIS IS FUCKED UP 
+# Can fix using skip within the read.csv()
+sites <- read.csv(file = 
+                    'datasets/mammal_fake_site_data.csv',
+                  skip = 2, stringsAsFactors = F)
+# header is about column names
+
+phys   <- read.csv(file = 
+                     'datasets/mammal_physiology_data.csv',
+                   stringsAsFactors = F,
+                   fileEncoding = 'iso-8859-1')
+# fileEncoding can fix errors with letters with accent 
+## marks
+
+#rename function
+library(dplyr)
+
+?rename
+# rename(.data, new = old)
+# phys <- rename(phys, Body_Mass = Body.Mass..g.)
+# phys <- rename(phys,
+#                Basal_met_rate = Basal.Metabolic.Rate..W.)
+# phys <- rename(phys, air_temp = Air.Temp..C)
+# phys <- rename(phys, Body_temp = Body.Temp..C.)
+
+phys <-
+    rename(phys, Body_Mass = Body.Mass..g.,
+         Basal_met_rate = Basal.Metabolic.Rate..W.,
+         air_temp = Air.Temp..C)
+
+phys
+colnames(phys)
+list.files()
+
+# HEY JOIN TOGETHER counts AND phys
+
+# first need to have similar column to group by
+# counts has a taxon column that has Genus+Species
+# but in phys they are separated. So I wanted to 
+# unite them. Then I can combine counts with
+# phys using left_join
+
+phys <- unite(phys, col = taxon, Genus, Species, sep = " ")
+
+joined <- left_join(counts, phys, by = 'taxon')
