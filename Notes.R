@@ -1,7 +1,12 @@
-###### 29 September 2015 ########
+#### LIBRARIES USED ####
 library(ggplot2)
 library(gapminder)
 library(dplyr)
+library(tidyr)
+library(lubridate)
+library(stringr)
+
+###### 29 September 2015 - gapminder ########
 # 1. Calclate the mean gdpPercap for each country.
 
 gapminder %>%
@@ -215,7 +220,7 @@ a[['a']]
 ## you can stop at subsetting & assign. heading
 
 
-#### Class October 1, 2015 ####
+#### October 1, 2015 - indexing ####
 
 # what do I mean when I say indexing?
 
@@ -321,7 +326,7 @@ library(gapminder)
 str(gapminder)
 
 
-#### October 6, 2015 ####
+#### October 6, 2015 - Subsetting ####
 
 ## SUBSETTING AND FOR LOOPS
 
@@ -357,7 +362,7 @@ shaker[[1]]
 shaker[[1]][[2]]
 shaker[[1]][2]
 
-#### October 13, 2015 ####
+#### October 13, 2015 - For loops ####
 
 # FOR LOOPS? ##
 
@@ -371,7 +376,7 @@ for (i in 1:5){
 }
 
 
-#### October 15, 2015 ####
+#### October 15, 2015 - For loops ####
 
 # MORE FOR LOOPS ###
 
@@ -416,7 +421,7 @@ for (i in 1:10){
 }
 
 
-#### October 20, 2015 ####
+#### October 20, 2015 - exercises ####
 
 mat <- matrix(1:100, nrow = 10, ncol = 10)
 
@@ -538,7 +543,7 @@ taxa_counts <- data.frame(taxa = taxa_values, abundance = counts)
 
 
 
-#### October 27, 2015 ####
+#### October 27, 2015 - functions/discrete pop####
 
 # Functions? 
 
@@ -655,7 +660,7 @@ pops %>%
                                          color = rainbow(250)) 
 
 
-#### November 3, 2015 ####
+#### November 3, 2015 - Tidy Data ####
 
 # Tidy Data
 library(tidyr)
@@ -711,7 +716,7 @@ counts_long <- gather(counts_wide, key = site, value = abundance)
 counts_long
 
 
-#### November 10, 2015 ####
+#### November 10, 2015 - Tidy Data ####
 
 library(tidyr)
 library(dplyr)
@@ -861,7 +866,7 @@ separated_gap <-
 separated_gap
 
 
-#### November 12, 2015 ####
+#### November 12, 2015 - spread and gather####
 library(tidyr)
 library(dplyr)
 mammals <- data.frame(site = c(1,1,2,3,3,3), 
@@ -1026,7 +1031,7 @@ metabolic <-
 metabolic
 
 
-#### November 17, 2015 ####
+#### November 17, 2015 - joining/data mashup ####
 library(tidyr)
 ## RECOMMENDED TO ALWAYS stringAsFactors = F
 counts <- read.csv(file = 
@@ -1082,3 +1087,99 @@ list.files()
 phys <- unite(phys, col = taxon, Genus, Species, sep = " ")
 
 joined <- left_join(counts, phys, by = 'taxon')
+
+
+
+#### November 19, 2015 - dates and strings####
+
+# Dates and Strings #
+
+# library(lubridate)
+# library(stringr)
+
+lubridate::now() #yyyy-mm-dd hh:mm:ss TZ
+lubridate::today() # yyyy-mm-dd
+
+str(today()) # Date object
+
+date1 <- '20010102'
+date2 <- '2001.01.02'
+date3 <- '2001/01/02'
+date4 <- '2001-01-02'
+date5 <- '2001..01/02'
+
+str(date1) #character vector
+# now let's turn it into a date
+# format refers to table found in ?strptime()
+# format also has to be in quotes
+date_date1 <- as.Date(x = date1, format = '%Y%m%d')
+str(date_date1)
+
+str(date2)
+date_date2 <- as.Date(x = date2, format = '%Y.%m.%d')
+date_date2
+
+date3
+as.Date(x = date3, format = '%Y/%m/%d')
+
+date4
+as.Date(x = date4, format = '%Y-%m-%d')
+
+date5
+as.Date(x = date5, format = '%Y..%m/%d')
+
+# POSIX TIME #
+
+lubridate::today()
+
+str(as.numeric(today()))
+
+as.numeric(today())
+
+posix_time <- as.numeric(today())
+posix_time
+
+lubridate::origin # origin of lubridate time
+# need to give it the origin so it knows
+# where to start counting from 
+as.Date(x = posix_time, origin = origin)
+
+### Using lubridate
+
+date_strings <- c('20010102',
+                  '2001.01.02',
+                  '2001..01..02',
+                  '2001_01_02',
+                  '01/01/02',
+                  '2001, January, 2',
+                  '2001,_January, 2')
+date_strings
+ymd(date_strings) # omg
+date_dates <- ymd(date_strings)
+year(date_dates)
+month(date_dates)
+month(date_dates, label = T)
+month(date_dates, label = T, abbr = F)
+day(date_dates)
+
+# String manipulations
+
+
+mms <- c('M. Mouse', 'm. mouse',
+         'Mickey Mouse', 'mick. mouse')
+
+grep(pattern = 'Mouse', x = mms)
+grep(pattern = 'Mouse', x = mms, value = T) 
+#gives us actual string
+grep(pattern = 'Mouse', x = mms, value = T,
+     ignore.case = T) # ignores case
+
+# find and replace 
+gsub(pattern = 'Mickey', replacement = 'Minnie',
+     x = mms)
+
+# if you wanted to replace all, use or operator |
+# straight up and down line
+
+gsub(pattern = 'Mickey|mick', replacement = 'Minnie',
+     x = mms)
