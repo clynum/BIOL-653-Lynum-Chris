@@ -1183,3 +1183,127 @@ gsub(pattern = 'Mickey', replacement = 'Minnie',
 
 gsub(pattern = 'Mickey|mick', replacement = 'Minnie',
      x = mms)
+
+#### December 1, 2015 - Raster ####
+
+
+#install.packages('ggmap')
+#install.packages('rworldmap')
+#install.packages("raster")
+#install.packages("rgdal")
+#install.packages("sp")
+
+# These should be installed one at a time.
+library(ggplot2)
+library(ggmap)
+library(rworldmap)
+library(sp)
+library(raster)
+library(rgdal)
+
+
+
+worldmap <- map_data(map = 'world')
+
+str(worldmap)
+
+# Plot entire world map with sites
+# Note - we have to group, otherwise the map goes crazy and connects ALL the dots
+# and takes forever
+# group says group it by country (Draws line around countries)
+
+ggplot(data = worldmap, aes(x = long, y = lat, group = group)) +
+  geom_polygon() + 
+  theme_bw() +
+  geom_point(aes(x = -71.0359052, y = 42.312449), colour = 'red')
+
+ggplot(data = worldmap, aes(x = long, y = lat, group = group)) +
+  geom_polygon() + 
+  theme_bw() +
+  geom_point(aes(x = -122.0896, y = 42.9759), colour = 'red') # CRATER LAKE
+
+
+#library(ggmap)
+map <- get_map(location = c(lon = -122.4263441,
+                            lat = 37.8161694),
+               zoom = 8, maptype = 'satellite')
+
+ggmap(map)
+
+map <- get_map(location = c(lon = -122.4263441,
+                            lat = 37.8161694),
+               zoom = 10, maptype = 'satellite')
+
+ggmap(map)
+
+map <- get_map(location = c(lon = -122.4263441,
+                            lat = 37.8161694),
+               zoom = 13, maptype = 'satellite')
+
+ggmap(map)
+
+
+
+# Crater Lake
+
+map <- get_map(location = c(lon = -122.0896,
+                            lat = 42.9759),
+               zoom = 8, maptype = 'satellite')
+ggmap(map)
+
+map <- get_map(location = c(lon = -122.0896,
+                            lat = 42.9759),
+               zoom = 10, maptype = 'satellite')
+ggmap(map)
+
+map <- get_map(location = c(lon = -122.1,
+                            lat = 42.95),
+               zoom = 12, maptype = 'satellite')
+ggmap(map)
+
+
+# RASTER
+
+cal_map <- raster('datasets/Sf_coast.tif')
+
+cal_map
+plot(cal_map)
+
+
+site <- c('San Pablo Bay', 'By the airport', 'Monterey Bay',
+          'Offshore Monterey', 'Way offshore Monterey',
+          'Golden Gate Bridge', 'Gulf of the Farallones', 
+          'NFIS Marine Reserve', 'Offshore on this same line')
+lon  <- c(-122.392266, -122.331935, -122.066719,
+          -122.652138, -124.6, -122.472611,
+          -122.819416, -123.100375, -124.6)
+lat  <- c(38.067847, 37.650587, 36.773023,
+          36.770929, 36.770929, 37.823769, 
+          37.817623, 37.817623, 37.765124)
+
+cal_sites <- data.frame('site' = site, 'lon' = lon, 'lat' = lat)
+cal_sites
+
+plot(cal_map)
+points(cal_sites[,2:3], pch = 19, cex = 1)
+
+
+# Turn data frame into a spatial dataframe
+
+coordinates(cal_sites) <- c(2, 3) # has to be lon and then lat
+str(cal_sites)
+
+
+# check projection of the cal_maps raster. what is it?
+
+projection(cal_map) #"+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
+
+# assign that to cal_sites
+projection(cal_sites) <- "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
+
+cal_imps <- extract(cal_map, cal_sites, buffer = 100)
+cal_imps
+
+cal_imps <- extract(cal_map, cal_sites, buffer = 1000)
+cal_imps
+
